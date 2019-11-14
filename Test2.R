@@ -74,10 +74,5 @@ expDF1 <- rbind(expDF1, expDF3)
 
 p <- plot_ly(expDF1, x = as.Date(expDF1$time), y = expDF1$points, color = expDF1$name, type = "scatter", mode = "lines")
 p
-#save_html(p, file = "Testgraph.html")
-#drive_upload("Testgraph.html")
-
-#to plotly
-Sys.setenv("plotly_username"="Burd89")
-Sys.setenv("plotly_api_key"="key")
-api_create(p, filename = "ExpChart")
+save_html(p, file = "Testgraph.html")
+drive_upload("Testgraph.html")
