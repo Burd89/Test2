@@ -60,6 +60,7 @@ for (i in 1:4) {
 
 write.csv(expDF1, file = "TestData.csv")
 
+drive_rename("TestData.csv", name = "TestData2.csv")
 drive_upload("TestData.csv")
 
 
@@ -78,6 +79,4 @@ p
 #drive_upload("Testgraph.html")
 
 #to plotly
-Sys.setenv("plotly_username"="Burd89")
-Sys.setenv("plotly_api_key"="key")
 api_create(p, filename = "ExpChart")
