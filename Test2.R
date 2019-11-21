@@ -87,7 +87,14 @@ expDF3$voc <- "na"
 expDF3$rank <- 1
 expDF1 <- rbind(expDF1, expDF3)
 
-p <- plot_ly(expDF1, x = as.Date(expDF1$time), y = expDF1$points, text = paste("Level", expDF1$level), color = expDF1$name, type = "scatter", mode = "lines") %>%
+p <- plot_ly(expDF1, 
+             x = as.Date(expDF1$time), 
+             y = expDF1$points, 
+             text = paste("Level", expDF1$level), 
+             color = expDF1$name, 
+             type = "scatter", 
+             mode = "lines+markers", 
+             marker = list(size = 4)) %>%
   layout(legend = list(x = 0.1, y = 0.5))
 p
 
