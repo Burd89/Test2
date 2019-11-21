@@ -40,6 +40,8 @@ library(plotly)
 
 #test
 
+drive_auth(email = TRUE)
+
 drive_download("TestData.csv", type = "csv", overwrite = TRUE)
 #expDF1 <- data.frame()
 expDF1 <- read.csv("TestData.csv")
@@ -63,18 +65,32 @@ write.csv(expDF1, file = "TestData.csv")
 drive_rename("TestData.csv", name = "TestData2.csv")
 drive_upload("TestData.csv")
 
-
 # graph
+maxExpDf <- aggregate(expDF1$points, by = list(expDF1$name), max)
+y_min <- min(maxExpDf[,2])
+#maxExpDf[maxExpDf$x == y_min, maxExpDf[,2]]
+maxExpDf <- maxExpDf[which.min(maxExpDf$x), ]
+
 expDF3 <- expDF1 %>% filter(expDF1$name == "Ari Bombari")
 expDF3$level <- ceiling(expDF3$level/3*2)
 expDF3$points <- 50/3 * (expDF3$level ** 3 - 6 * expDF3$level ** 2 + 17 * expDF3$level - 12)
-expDF3$name <- "Exp Share Range"
+expDF3$name <- "Minimum Exp Share Range"
 expDF3$voc <- "na"
 expDF3$rank <- 1
 expDF1 <- rbind(expDF1, expDF3)
 
-p <- plot_ly(expDF1, x = as.Date(expDF1$time), y = expDF1$points, color = expDF1$name, type = "scatter", mode = "lines")
+expDF3 <- expDF1 %>% filter(expDF1$name == as.character(maxExpDf$Group.1[[1]]))
+expDF3$level <- floor(expDF3$level/2*3)
+expDF3$points <- 50/3 * (expDF3$level ** 3 - 6 * expDF3$level ** 2 + 17 * expDF3$level - 12)
+expDF3$name <- "Maximum Exp Share Range"
+expDF3$voc <- "na"
+expDF3$rank <- 1
+expDF1 <- rbind(expDF1, expDF3)
+
+p <- plot_ly(expDF1, x = as.Date(expDF1$time), y = expDF1$points, text = paste("Level", expDF1$level), color = expDF1$name, type = "scatter", mode = "lines") %>%
+  layout(legend = list(x = 0.1, y = 0.5))
 p
+
 #save_html(p, file = "Testgraph.html")
 #drive_upload("Testgraph.html")
 
