@@ -72,7 +72,7 @@ y_min <- min(maxExpDf[,2])
 maxExpDf <- maxExpDf[which.min(maxExpDf$x), ]
 
 expDF3 <- expDF1 %>% filter(expDF1$name == "Ari Bombari")
-expDF3$level <- ceiling(expDF3$level/3*2)
+expDF3$level <- floor(expDF3$level/3*2)
 expDF3$points <- 50/3 * (expDF3$level ** 3 - 6 * expDF3$level ** 2 + 17 * expDF3$level - 12)
 expDF3$name <- "Minimum Exp Share Range"
 expDF3$voc <- "na"
