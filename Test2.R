@@ -1,52 +1,21 @@
+# library import ----
 library(rjson)
 library(dplyr)
 library(googledrive)
 library(htmltools)
 library(plotly)
 
-
-#drive_download("TestData.csv", type = "csv", overwrite = TRUE)
-#expDF1 <- data.frame()
-#expDF1 <- read.csv("TestData.csv")
-
-
-#url = "https://api.tibiadata.com/v2/highscores/Faluna/Experience/Knight.json"
-#expDF <- jsonlite::fromJSON(url)
-#expDF <- data.frame(expDF$highscores$data)
-#expDF["time"] <- Sys.time()
-#expDF1 <- rbind(expDF1, expDF %>% filter(expDF$name == "Wats Ke Burd"))
-
-#url = "https://api.tibiadata.com/v2/highscores/Faluna/Experience/Druid.json"
-#expDF <- jsonlite::fromJSON(url)
-#expDF <- data.frame(expDF$highscores$data)
-#expDF["time"] <- Sys.time()
-#expDF1 <- rbind(expDF1, expDF %>% filter(expDF$name == "Po Ni Teel"))
-
-#url = "https://api.tibiadata.com/v2/highscores/Faluna/Experience/Sorcerer.json"
-#expDF <- jsonlite::fromJSON(url)
-#expDF <- data.frame(expDF$highscores$data)
-#expDF["time"] <- Sys.time()
-#expDF1 <- rbind(expDF1, expDF %>% filter(expDF$name == "Don Teeltje"))
-
-#url = "https://api.tibiadata.com/v2/highscores/Faluna/Experience/Paladin.json"
-#expDF <- jsonlite::fromJSON(url)
-#expDF <- data.frame(expDF$highscores$data)
-#expDF["time"] <- Sys.time()
-#expDF1 <- rbind(expDF1, expDF %>% filter(expDF$name == "Ari Bombari"))
-
-#write.csv(expDF1, file = "TestData.csv")
-
-#drive_upload("TestData.csv")
-
-#test
+# import data ----
 
 drive_auth(email = TRUE)
 
 drive_download("TestData.csv", type = "csv", overwrite = TRUE)
-#expDF1 <- data.frame()
 expDF1 <- read.csv("TestData.csv")
 expDF1$X <- NULL
 expDF1$time <- as.Date(expDF1$time)
+
+# web scraping and updating data ----
+
 vocation <- c("Knight","Sorcerer","Druid","Paladin")
 names <- c("Wats Ke Burd","Don Teeltje","Po Ni Teel","Ari Bombari")
 
@@ -60,12 +29,14 @@ for (i in 1:4) {
   expDF1 <- rbind(expDF1, expDF %>% filter(expDF$name == names[i]))
 }
 
+# uploading data ----
+
 write.csv(expDF1, file = "TestData.csv")
 
 drive_rename("TestData.csv", name = "TestData2.csv")
 drive_upload("TestData.csv")
 
-# graph
+# data pretreatment for graphing ----
 maxExpDf <- aggregate(expDF1$points, by = list(expDF1$name), max)
 y_min <- min(maxExpDf[,2])
 #maxExpDf[maxExpDf$x == y_min, maxExpDf[,2]]
@@ -91,6 +62,8 @@ expDF5 <- aggregate(expDF1$level, by = list(expDF1$time), min)
 expDF5 <- filter(expDF5, as.Date(expDF5$Group.1) > as.Date("2019-10-23"))
 expDF5$x <- floor(expDF5$x/2*3)
 expDF5$points <- 50/3 * (expDF5$x ** 3 - 6 * expDF5$x ** 2 + 17 * expDF5$x - 12)
+
+# plotting ----
 
 p <- plot_ly(expDF1, 
              x = as.Date(expDF1$time), 
@@ -127,5 +100,6 @@ p
 #save_html(p, file = "Testgraph.html")
 #drive_upload("Testgraph.html")
 
-#to plotly
+# uploading plot ----
+
 api_create(p, filename = "ExpChart")
