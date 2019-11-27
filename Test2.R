@@ -79,12 +79,12 @@ expDF4$voc <- "na"
 expDF4$rank <- 1
 #expDF1 <- rbind(expDF1, expDF4)
 
-expDF3 <- expDF1 %>% filter(expDF1$name == as.character(maxExpDf$Group.1[[1]]))
-expDF3$level <- floor(expDF3$level/2*3)
-expDF3$points <- 50/3 * (expDF3$level ** 3 - 6 * expDF3$level ** 2 + 17 * expDF3$level - 12)
-expDF3$name <- "Maximum Exp Share Range"
-expDF3$voc <- "na"
-expDF3$rank <- 1
+#expDF3 <- expDF1 %>% filter(expDF1$name == as.character(maxExpDf$Group.1[[1]]))
+#expDF3$level <- floor(expDF3$level/2*3)
+#expDF3$points <- 50/3 * (expDF3$level ** 3 - 6 * expDF3$level ** 2 + 17 * expDF3$level - 12)
+#expDF3$name <- "Maximum Exp Share Range"
+#expDF3$voc <- "na"
+#expDF3$rank <- 1
 #expDF1 <- rbind(expDF1, expDF3)
 
 expDF5 <- aggregate(expDF1$level, by = list(expDF1$time), min)
@@ -106,7 +106,7 @@ p <- plot_ly(expDF1,
             mode = 'lines',
             inherit = FALSE, 
             line = list(color = 'rgba(144,238,144,1)'),
-            showlegend = FALSE, 
+            #showlegend = FALSE, 
             name = 'Maximum Exp Share Range') %>%
   add_trace(x = as.Date(expDF4$time), 
             y = expDF4$points, 
@@ -117,7 +117,7 @@ p <- plot_ly(expDF1,
             fillcolor='rgba(144,238,144,0.2)', 
             line = list(color = 'rgba(144,238,144,1)'),
             #showlegend = FALSE, 
-            name = 'Exp Share Range') %>%
+            name = 'Minimum Exp Share Range') %>%
   layout(legend = list(x = 0.1, y = 0.5))
 
 p
