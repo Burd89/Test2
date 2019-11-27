@@ -77,7 +77,7 @@ expDF4$points <- 50/3 * (expDF4$level ** 3 - 6 * expDF4$level ** 2 + 17 * expDF4
 expDF4$name <- "Minimum Exp Share Range"
 expDF4$voc <- "na"
 expDF4$rank <- 1
-expDF1 <- rbind(expDF1, expDF4)
+#expDF1 <- rbind(expDF1, expDF4)
 
 expDF3 <- expDF1 %>% filter(expDF1$name == as.character(maxExpDf$Group.1[[1]]))
 expDF3$level <- floor(expDF3$level/2*3)
@@ -85,7 +85,12 @@ expDF3$points <- 50/3 * (expDF3$level ** 3 - 6 * expDF3$level ** 2 + 17 * expDF3
 expDF3$name <- "Maximum Exp Share Range"
 expDF3$voc <- "na"
 expDF3$rank <- 1
-expDF1 <- rbind(expDF1, expDF3)
+#expDF1 <- rbind(expDF1, expDF3)
+
+expDF5 <- aggregate(expDF1$level, by = list(expDF1$time), min)
+expDF5 <- filter(expDF5, as.Date(expDF5$Group.1) > as.Date("2019-10-23"))
+expDF5$x <- floor(expDF5$x/2*3)
+expDF5$points <- 50/3 * (expDF5$x ** 3 - 6 * expDF5$x ** 2 + 17 * expDF5$x - 12)
 
 p <- plot_ly(expDF1, 
              x = as.Date(expDF1$time), 
@@ -95,8 +100,8 @@ p <- plot_ly(expDF1,
              type = "scatter", 
              mode = "lines+markers", 
              marker = list(size = 4)) %>%
-  add_trace(x = as.Date(expDF3$time), 
-            y = expDF3$points, 
+  add_trace(x = as.Date(expDF5$Group.1), 
+            y = expDF5$points, 
             type = 'scatter', 
             mode = 'lines',
             inherit = FALSE, 
