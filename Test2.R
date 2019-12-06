@@ -80,7 +80,7 @@ p <- plot_ly(expDF1,
             inherit = FALSE, 
             line = list(color = 'rgba(144,238,144,1)'),
             #showlegend = FALSE, 
-            text = paste("Level", expDF5$x - 1),
+            text = paste("Maximum Exp voor","Level", expDF5$x - 1),
             name = 'Maximum Exp Share Range') %>%
   add_trace(x = as.Date(expDF4$time), 
             y = expDF4$points, 
