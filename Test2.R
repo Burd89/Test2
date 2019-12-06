@@ -60,7 +60,7 @@ expDF4$rank <- 1
 
 expDF5 <- aggregate(expDF1$level, by = list(expDF1$time), min)
 expDF5 <- filter(expDF5, as.Date(expDF5$Group.1) > as.Date("2019-10-23"))
-expDF5$x <- floor(expDF5$x/2*3)
+expDF5$x <- floor(expDF5$x/2*3+1)
 expDF5$points <- 50/3 * (expDF5$x ** 3 - 6 * expDF5$x ** 2 + 17 * expDF5$x - 12)
 
 # plotting ----
@@ -80,7 +80,7 @@ p <- plot_ly(expDF1,
             inherit = FALSE, 
             line = list(color = 'rgba(144,238,144,1)'),
             #showlegend = FALSE, 
-            text = paste("Level", expDF5$x),
+            text = paste("Level", expDF5$x - 1),
             name = 'Maximum Exp Share Range') %>%
   add_trace(x = as.Date(expDF4$time), 
             y = expDF4$points, 
